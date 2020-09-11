@@ -15,7 +15,7 @@ public class JWTTokenValidationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         MutableHttpServletRequest wrapperRequest=(MutableHttpServletRequest)request;
-        if (WebUtils.isAdminAuth(wrapperRequest) || WebUtils.isEndUserAuth(wrapperRequest) ){
+        if (WebUtils.isAdminAuth(wrapperRequest) || WebUtils.isEndUserAuth(wrapperRequest)){
             //Validate Token
             throw new InValidJwtTokenException("Jwt Token is not valid");
         }

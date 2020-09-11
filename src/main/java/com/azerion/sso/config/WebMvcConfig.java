@@ -1,9 +1,6 @@
 package com.azerion.sso.config;
 
-import com.azerion.sso.controller.interceptor.CommonHeaderParameterInterceptor;
-import com.azerion.sso.controller.interceptor.JWTTokenValidationInterceptor;
-import com.azerion.sso.controller.interceptor.M2MClientIDValidationInterceptor;
-import com.azerion.sso.controller.interceptor.M2MRequestParametersToHeaderInterceptor;
+import com.azerion.sso.controller.interceptor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,6 +21,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     JWTTokenValidationInterceptor jwtTokenValidationInterceptor;
 
+    @Autowired
+    AuthTypeHeaderParameterInterceptor authTypeHeaderParameterInterceptor;
+
+    @Autowired
+    M2MAddCridentialInterceptor m2mAddCridentialInterceptor;
+
+    @Autowired
+    EndUserAddCridentialInterceptor endUserAddCridentialInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(commonHeaderParameterInterceptor).addPathPatterns("/**");
@@ -31,5 +37,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(m2MClientIDValidationInterceptor).addPathPatterns("/api/**/m2m/**");
         registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/end-user/**");
         registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/admin/**");
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/m2m/**");
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/end-user/**");
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/admin/**");
+        registry.addInterceptor(m2mAddCridentialInterceptor).addPathPatterns("/api/**/m2m/**");
+        registry.addInterceptor(endUserAddCridentialInterceptor).addPathPatterns("/api/**/end-user/**");
     }
 }

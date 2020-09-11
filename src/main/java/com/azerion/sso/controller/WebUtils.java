@@ -21,7 +21,7 @@ public class WebUtils {
             return this.clientUserName;
         }
 
-        public String getClientSecret(){
+        public String clientSecret(){
             return this.clientSecret;
         }
 

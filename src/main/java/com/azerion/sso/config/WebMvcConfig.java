@@ -30,9 +30,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     EndUserAddCridentialInterceptor endUserAddCridentialInterceptor;
 
+    @Autowired
+    CommonM2MHeaderParameterInterceptor commonM2MHeaderParameterInterceptor;
+
+    @Autowired
+    CommonEndUserHeaderParameterInterceptor commonEndUserHeaderParameterInterceptor;
+
+    @Autowired
+    CommonAdminHeaderParameterInterceptor commonAdminHeaderParameterInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(commonHeaderParameterInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(commonM2MHeaderParameterInterceptor).addPathPatterns("/api/**/m2m/**");
+        registry.addInterceptor(commonEndUserHeaderParameterInterceptor).addPathPatterns("/api/**/end-user/**");
+        registry.addInterceptor(commonAdminHeaderParameterInterceptor).addPathPatterns("/api/**/admin/**");
         registry.addInterceptor(m2MRequestParametersToHeaderInterceptor).addPathPatterns("/api/**/m2m/**");
         registry.addInterceptor(m2MClientIDValidationInterceptor).addPathPatterns("/api/**/m2m/**");
         registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/end-user/**");

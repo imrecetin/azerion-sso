@@ -63,8 +63,15 @@ public class ExceptionControllerAdvice {
     @ResponseBody
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ResponseEntity<ErrorResource> courseNotFoundExceptionHandler(EntityNotFoundException ex) {
+    ResponseEntity<ErrorResource> entityNotFoundException(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.NOT_FOUND.getReasonPhrase()).message(ex.getMessage()).build());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(EntityNotUpdatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ResponseEntity<ErrorResource> entityNotUpdatedExceptionHandler(EntityNotUpdatedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.BAD_REQUEST.getReasonPhrase()).message(ex.getMessage()).build());
     }
 
     @ResponseBody
@@ -110,13 +117,6 @@ public class ExceptionControllerAdvice {
                 .stream()
                 .map( ObjectError::getDefaultMessage )
                 .collect( Collectors.toList() ).toString();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.BAD_REQUEST.getReasonPhrase()).message(ex.getMessage()).build());
-    }
-
-    @ResponseBody
-    @ExceptionHandler(EntityNotUpdatedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<ErrorResource> entityNotUpdatedExceptionHandler(EntityNotUpdatedException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.BAD_REQUEST.getReasonPhrase()).message(ex.getMessage()).build());
     }
 

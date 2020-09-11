@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class WebUtils {
 
     public enum M2M_CLIENT{
-        clientId1("client1","clientSecret1"),clientId2("client2","clientSecret2");
+        clientId1("client1","pass1"),clientId2("client2","pass2");
         private String clientUserName;
         private String clientSecret;
         M2M_CLIENT(String clientUserName, String clientSecret) {

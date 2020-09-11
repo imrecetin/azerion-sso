@@ -24,6 +24,8 @@ public class AdminTodoController implements TodoController {
     private TodoService todoService;
     private TodoResourceAssembler todoResourceAssembler;
 
+    public AdminTodoController(){}
+
     @Autowired
     public AdminTodoController(TodoServiceImpl todoService, TodoAdminResourceAssembler todoResourceAssembler){
         this.todoService=todoService;

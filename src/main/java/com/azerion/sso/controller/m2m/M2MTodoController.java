@@ -24,6 +24,8 @@ public class M2MTodoController implements TodoController {
     private TodoService todoService;
     private TodoResourceAssembler todoResourceAssembler;
 
+    public M2MTodoController(){}
+
     @Autowired
     public M2MTodoController(TodoServiceImpl todoService, TodoM2MResourceAssembler todoResourceAssembler){
         this.todoService=todoService;

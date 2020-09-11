@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class TodoAdminResourceAssembler extends TodoResourceAssembler {
 
     @Autowired
-    public TodoAdminResourceAssembler(AdminTodoController controller, CreationDateAdminResourceAssembler creationDateModelAssembler) {
-        super(controller,creationDateModelAssembler);
+    public TodoAdminResourceAssembler(CreationDateAdminResourceAssembler creationDateModelAssembler) {
+        super(new AdminTodoController(),creationDateModelAssembler);
     }
 
 }

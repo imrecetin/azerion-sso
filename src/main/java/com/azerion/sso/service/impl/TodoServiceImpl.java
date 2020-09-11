@@ -80,7 +80,7 @@ public class TodoServiceImpl implements TodoService {
         }
         availableTodos.removeIf(predicateFindTodo);
         availableTodos.add(todo);
-        return null;
+        return todo;
     }
 
     @Override

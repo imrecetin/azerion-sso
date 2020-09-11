@@ -24,6 +24,8 @@ public class EndUserTodoController implements TodoController {
     private TodoService todoService;
     private TodoResourceAssembler todoResourceAssembler;
 
+    public EndUserTodoController(){}
+
     @Autowired
     public EndUserTodoController(TodoServiceImpl todoService, TodoEndUserResourceAssembler todoResourceAssembler){
         this.todoService=todoService;

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class CreationDateEndUserResourceAssembler extends CreationDateResourceAssembler{
 
     @Autowired
-    public CreationDateEndUserResourceAssembler(EndUserTodoController controller) {
-        super(controller);
+    public CreationDateEndUserResourceAssembler() {
+        super(new EndUserTodoController());
     }
 
 }

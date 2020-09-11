@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class CreationDateM2MResourceAssembler extends CreationDateResourceAssembler{
 
     @Autowired
-    public CreationDateM2MResourceAssembler(M2MTodoController controller) {
-        super(controller);
+    public CreationDateM2MResourceAssembler() {
+        super(new M2MTodoController());
     }
 
 }

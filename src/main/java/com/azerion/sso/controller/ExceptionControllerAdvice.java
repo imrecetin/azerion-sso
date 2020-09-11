@@ -1,10 +1,7 @@
 package com.azerion.sso.controller;
 
 import com.azerion.sso.controller.resource.ErrorResource;
-import com.azerion.sso.exception.EntityNotFoundException;
-import com.azerion.sso.exception.EntityNotUpdatedException;
-import com.azerion.sso.exception.InvalidM2MClientException;
-import com.azerion.sso.exception.NotAnAppropriateInputParameterException;
+import com.azerion.sso.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -70,6 +67,12 @@ public class ExceptionControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.NOT_FOUND.getReasonPhrase()).message(ex.getMessage()).build());
     }
 
+    @ResponseBody
+    @ExceptionHandler(InValidXAuthTypeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ResponseEntity<ErrorResource>  inValidXAuthTypeExceptionHandler(InValidXAuthTypeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.BAD_REQUEST.getReasonPhrase()).message(ex.getMessage()).build());
+    }
 
     @ResponseBody
     @ExceptionHandler(InvalidM2MClientException.class)

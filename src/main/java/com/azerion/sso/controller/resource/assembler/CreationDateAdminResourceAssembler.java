@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class CreationDateAdminResourceAssembler extends CreationDateResourceAssembler{
 
     @Autowired
-    public CreationDateAdminResourceAssembler(AdminTodoController controller) {
-        super(controller);
+    public CreationDateAdminResourceAssembler() {
+        super(new AdminTodoController());
     }
 
 }

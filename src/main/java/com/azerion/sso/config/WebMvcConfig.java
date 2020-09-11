@@ -1,6 +1,7 @@
 package com.azerion.sso.config;
 
 import com.azerion.sso.controller.interceptor.CommonHeaderParameterInterceptor;
+import com.azerion.sso.controller.interceptor.JWTTokenValidationInterceptor;
 import com.azerion.sso.controller.interceptor.M2MClientIDValidationInterceptor;
 import com.azerion.sso.controller.interceptor.M2MRequestParametersToHeaderInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     CommonHeaderParameterInterceptor commonHeaderParameterInterceptor;
 
+    @Autowired
+    JWTTokenValidationInterceptor jwtTokenValidationInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(commonHeaderParameterInterceptor).addPathPatterns("/**");
         registry.addInterceptor(m2MRequestParametersToHeaderInterceptor).addPathPatterns("/api/**/m2m/**");
         registry.addInterceptor(m2MClientIDValidationInterceptor).addPathPatterns("/api/**/m2m/**");
+        registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/end-user/**");
+        registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/admin/**");
     }
 }

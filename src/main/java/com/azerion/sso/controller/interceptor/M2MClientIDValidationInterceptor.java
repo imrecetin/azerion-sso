@@ -3,13 +3,12 @@ package com.azerion.sso.controller.interceptor;
 import com.azerion.sso.controller.MutableHttpServletRequest;
 import com.azerion.sso.controller.WebUtils;
 import com.azerion.sso.exception.InValidXAuthTypeException;
-import com.azerion.sso.exception.InvalidM2MClientException;
+import com.azerion.sso.exception.InValidM2MClientException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -25,7 +24,7 @@ public class M2MClientIDValidationInterceptor extends HandlerInterceptorAdapter 
         String clientId=WebUtils.getClientIdFromHeader(wrapperRequest);
         final Optional<WebUtils.M2M_CLIENT> m2mClient = WebUtils.M2M_CLIENT.of(clientId);
         if (!m2mClient.isPresent()){
-            throw new InvalidM2MClientException("M2M için geçersiz clientId : "+clientId);
+            throw new InValidM2MClientException("M2M için geçersiz clientId : "+clientId);
         }
 
         return true;

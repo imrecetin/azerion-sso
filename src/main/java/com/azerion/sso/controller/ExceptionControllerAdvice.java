@@ -75,9 +75,16 @@ public class ExceptionControllerAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(InvalidM2MClientException.class)
+    @ExceptionHandler(InValidJwtTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    ResponseEntity<ErrorResource>  inValidJwtTokenExceptionHandler(InValidJwtTokenException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.UNAUTHORIZED.getReasonPhrase()).message(ex.getMessage()).build());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InValidM2MClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<ErrorResource>  invalidM2MClientExceptionHandler(InvalidM2MClientException ex) {
+    ResponseEntity<ErrorResource>  invalidM2MClientExceptionHandler(InValidM2MClientException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.BAD_REQUEST.getReasonPhrase()).message(ex.getMessage()).build());
     }
 

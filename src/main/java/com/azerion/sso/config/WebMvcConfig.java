@@ -41,18 +41,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(commonHeaderParameterInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(commonM2MHeaderParameterInterceptor).addPathPatterns("/api/**/m2m/**");
-        registry.addInterceptor(commonEndUserHeaderParameterInterceptor).addPathPatterns("/api/**/end-user/**");
-        registry.addInterceptor(commonAdminHeaderParameterInterceptor).addPathPatterns("/api/**/admin/**");
-        registry.addInterceptor(m2MRequestParametersToHeaderInterceptor).addPathPatterns("/api/**/m2m/**");
-        registry.addInterceptor(m2MClientIDValidationInterceptor).addPathPatterns("/api/**/m2m/**");
-        registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/end-user/**");
-        registry.addInterceptor(jwtTokenValidationInterceptor).addPathPatterns("/api/**/admin/**");
-        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/m2m/**");
-        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/end-user/**");
-        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/admin/**");
-        registry.addInterceptor(m2mAddCridentialInterceptor).addPathPatterns("/api/**/m2m/**");
-        registry.addInterceptor(endUserAddCridentialInterceptor).addPathPatterns("/api/**/end-user/**");
     }
 }

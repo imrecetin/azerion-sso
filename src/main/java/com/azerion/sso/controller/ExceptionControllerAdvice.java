@@ -103,13 +103,6 @@ public class ExceptionControllerAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    ResponseEntity<ErrorResource> internalServerErrorHandler(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResource.builder().name(ex.getClass().toString()).reasonPhrase(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).message(ex.getMessage()).build());
-    }
-
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<ErrorResource> internalServerErrorHandler(MethodArgumentNotValidException ex) {

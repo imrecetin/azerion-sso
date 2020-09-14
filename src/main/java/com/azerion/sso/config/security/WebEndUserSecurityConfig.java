@@ -1,4 +1,4 @@
-package com.azerion.sso.config;
+package com.azerion.sso.config.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

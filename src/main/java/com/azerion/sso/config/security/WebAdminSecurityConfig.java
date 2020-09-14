@@ -1,4 +1,4 @@
-package com.azerion.sso.config;
+package com.azerion.sso.config.security;
 
 
 import com.auth0.spring.security.api.JwtWebSecurityConfigurer;

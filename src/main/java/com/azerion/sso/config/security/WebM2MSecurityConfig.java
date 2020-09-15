@@ -1,6 +1,5 @@
 package com.azerion.sso.config.security;
 
-import com.azerion.sso.config.security.M2MAuthenticationProvider;
 import com.azerion.sso.controller.filter.M2MBasicAuthFilter;
 import com.azerion.sso.controller.filter.M2MCommonHeaderParameterFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class WebM2MSecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET,"/api/*/m2m/todo/*").permitAll()
+        .antMatchers(HttpMethod.GET,"/api/*/m2m/todo/?").permitAll()
         .antMatchers("/api/*/m2m/todo/**").authenticated();
 
         http.addFilterAfter(new M2MBasicAuthFilter(), ConcurrentSessionFilter.class);

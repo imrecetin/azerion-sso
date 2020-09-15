@@ -9,8 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class M2MAuthenticationProvider implements AuthenticationProvider {
@@ -35,8 +37,14 @@ public class M2MAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Client Name or Client Pass is not correct");
         }
 
-        final Collection<GrantedAuthority> grantedAuthorities = authenticatedUser.get().getAuthorities();
-        Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
+        Collection<GrantedAuthority> grantedAuthorities = authenticatedUser.get().getAuthorities();
+        List<GrantedAuthority> extraGrantedAuthorities=new ArrayList<>();
+        if ("client1".equals(name)){
+            extraGrantedAuthorities.add(new SimpleGrantedAuthority("TODO_DELETE"));
+        }
+        List<GrantedAuthority> totalGrantedAuthorities=new ArrayList<>(grantedAuthorities);
+        totalGrantedAuthorities.addAll(extraGrantedAuthorities);
+        Authentication auth = new UsernamePasswordAuthenticationToken(name, password, totalGrantedAuthorities);
         return auth;
     }
 

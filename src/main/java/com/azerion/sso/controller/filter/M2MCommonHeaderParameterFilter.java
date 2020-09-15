@@ -24,15 +24,14 @@ public class M2MCommonHeaderParameterFilter implements Filter {
         String clientSecret = WebUtils.getClientSecretFromParameter(mutableRequest);
         if (!StringUtils.isEmpty(clientId) && !StringUtils.isEmpty(mutableRequest)){
             WebUtils.putClientIdAndSecretToHeader(mutableRequest,clientId,clientSecret);
-            WebUtils.putClientIdAndSecretToHeaderAsHttpBasic(mutableRequest,clientId,clientSecret);
         }
         clientId = WebUtils.getClientIdFromHeader(mutableRequest);
         clientSecret = WebUtils.getClientSecretFromHeader(mutableRequest);
+        final Optional<WebUtils.M2M_CLIENT> m2mClient = WebUtils.M2M_CLIENT.of(clientId);
+        if (!m2mClient.isPresent()){
+            throw new InValidM2MClientException("M2M için geçersiz clientId : "+clientId);
+        }
         if (!StringUtils.isEmpty(clientId) && !StringUtils.isEmpty(clientSecret)){
-            final Optional<WebUtils.M2M_CLIENT> m2mClient = WebUtils.M2M_CLIENT.of(clientId);
-            if (!m2mClient.isPresent()){
-                throw new InValidM2MClientException("M2M için geçersiz clientId : "+clientId);
-            }
             WebUtils.putClientIdAndSecretToHeaderAsHttpBasic(mutableRequest,clientId,clientSecret);
         }
         filterChain.doFilter(mutableRequest, servletResponse);

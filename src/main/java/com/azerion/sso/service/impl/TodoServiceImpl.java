@@ -7,6 +7,7 @@ import com.azerion.sso.model.CreationDate;
 import com.azerion.sso.model.Todo;
 import com.azerion.sso.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,6 +44,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @PreAuthorize("hasPermission(#todo,'Todo','Add')")
     public Todo save(Todo todo) {
         if (todo.getId()!=null){
             throw new NotAnAppropriateInputParameterException("Id");
@@ -84,6 +86,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @PreAuthorize("hasPermission(#todoId,'Todo','Delete')")
     public Todo deleteBy(Long todoId) {
         final Optional<Todo> foundedTodo = availableTodos.stream().filter(todo -> todo.getId().equals(todoId)).findFirst();
         if (!availableTodos.removeIf(todo->todo.getId().equals(todoId))){

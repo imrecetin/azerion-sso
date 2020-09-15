@@ -5,6 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.*;
 
 public class TokenAuthentication extends AbstractAuthenticationToken {

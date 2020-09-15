@@ -3,6 +3,7 @@ package com.azerion.sso.controller;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -141,5 +142,13 @@ public class WebUtils {
     public static void putClientIdAndSecretToHeaderAsHttpBasic(ServletRequest wrapperRequest,String clientId, String clientSecret) {
         wrapperRequest.setAttribute("username",clientId);
         wrapperRequest.setAttribute("password",clientSecret);
+    }
+
+    public static String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7, headerAuth.length());
+        }
+        return null;
     }
 }

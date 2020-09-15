@@ -41,7 +41,7 @@ public class WebAdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/*/admin/todo/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/*/admin/todo/?").permitAll()
                 .antMatchers("/api/*/admin/todo/**").authenticated();
 
     }

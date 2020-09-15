@@ -1,6 +1,7 @@
 package com.azerion.sso.service;
 
 import com.azerion.sso.model.Todo;
+
 import java.util.List;
 
 public interface TodoService {

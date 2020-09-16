@@ -6,6 +6,7 @@ import com.azerion.sso.controller.util.WebUtils;
 import com.azerion.sso.exception.InValidJwtTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

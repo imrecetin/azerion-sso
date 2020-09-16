@@ -1,7 +1,5 @@
 package com.azerion.sso.controller.resource.assembler;
 
-import com.azerion.sso.controller.TodoController;
-import com.azerion.sso.controller.admin.AdminTodoController;
 import com.azerion.sso.controller.m2m.M2MTodoController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

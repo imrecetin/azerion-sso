@@ -1,7 +1,10 @@
 package com.azerion.sso.config.security;
 
 
+import com.auth0.jwk.JwkProvider;
+import com.auth0.jwk.JwkProviderBuilder;
 import com.auth0.spring.security.api.JwtWebSecurityConfigurer;
+import com.azerion.sso.config.security.provider.AdminAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -31,8 +34,10 @@ public class WebAdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JwkProvider jwkProvider = (new JwkProviderBuilder(issuer)).build();
+        final AdminAuthenticationProvider adminAuthenticationProvider = new AdminAuthenticationProvider(jwkProvider, issuer, apiAudience);
         JwtWebSecurityConfigurer
-                .forRS256(apiAudience, issuer)
+                .forRS256(apiAudience, issuer,adminAuthenticationProvider)
                 .configure(http)
                 .antMatcher("/api/*/admin/**")
                 .cors()

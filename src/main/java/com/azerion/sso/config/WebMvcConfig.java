@@ -41,5 +41,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/m2m/**");
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/end-user/**");
+        registry.addInterceptor(authTypeHeaderParameterInterceptor).addPathPatterns("/api/**/admin/**");
     }
 }

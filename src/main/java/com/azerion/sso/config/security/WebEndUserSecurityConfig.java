@@ -1,60 +1,105 @@
 package com.azerion.sso.config.security;
 
-import com.auth0.spring.security.api.JwtWebSecurityConfigurer;
-import org.springframework.beans.factory.annotation.Value;
+import com.azerion.sso.config.security.oauth2.CustomOAuth2UserService;
+import com.azerion.sso.config.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.azerion.sso.config.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.azerion.sso.config.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.azerion.sso.config.security.provider.EndUserAuthenticationProvider;
+import com.azerion.sso.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @Order(2)
 public class WebEndUserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value(value = "${com.auth0.domain}")
-    private String domain;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
-    @Value(value = "${com.auth0.clientId}")
-    private String clientId;
+    @Autowired
+    private CustomOAuth2UserService customOAutha2UserService;
 
-    @Value(value = "${com.auth0.clientSecret}")
-    private String clientSecret;
+    @Autowired
+    private EndUserAuthenticationProvider endUserAuthenticationProvider;
 
-    @Value(value = "${com.auth0.issuer}")
-    private String issuer;
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-    @Value(value = "${com.auth0.apiAudience}")
-    private String apiAudience;
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    @Autowired
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
+    }
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .authenticationProvider(endUserAuthenticationProvider)
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JwtWebSecurityConfigurer
-                .forRS256(apiAudience, issuer)
-                .configure(http)
-                .antMatcher("/api/*/end-user/**")
-                .cors()
-                .and()
-                .csrf().disable()
+        http.antMatcher("/api/*/end-user/**")
+                .cors().and().csrf().disable()
+                .anonymous().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/*/end-user/todo/?").permitAll()
-                .antMatchers("/api/*/end-user/todo/**").authenticated();
+                .antMatchers("/api/*/end-user/todo/oauth2/**").permitAll()
+                .antMatchers("/api/*/end-user/todo/**").authenticated()
+                .and()
+                .oauth2Login()
+                    .authorizationEndpoint()
+                        .baseUri("/api/*/end-user/todo/oauth2/authorize")
+                        .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                        .and()
+                    .redirectionEndpoint()
+                        .baseUri("/api/*/end-user/todo/oauth2/callback/*")
+                        .and()
+                    .userInfoEndpoint()
+                        .userService(customOAutha2UserService)
+                        .and()
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
+                    .failureHandler(oAuth2AuthenticationFailureHandler);
 
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
 }

@@ -1,5 +1,6 @@
-package com.azerion.sso.controller;
+package com.azerion.sso.controller.util;
 
+import com.azerion.sso.controller.MutableHttpServletRequest;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
@@ -56,16 +57,15 @@ public class WebUtils {
         return X_AUTH_TYPE.M2M.xAuthTypeHeaderValue().equals(request.getHeader("x-auth-type"));
     }
 
-    public static boolean isM2MAuth(ServletRequest request) {
-        final String attribute = (String)request.getAttribute("x-auth-type");
-        return X_AUTH_TYPE.M2M.xAuthTypeHeaderValue().equals(attribute);
+    public static boolean isM2MAuth(HttpServletRequest request) {
+        return X_AUTH_TYPE.M2M.xAuthTypeHeaderValue().equals(request.getHeader("x-auth-type"));
     }
 
-    public static boolean isEndUserAuth(MutableHttpServletRequest request) {
+    public static boolean isEndUserAuth(HttpServletRequest request) {
         return X_AUTH_TYPE.EndUser.xAuthTypeHeaderValue().equals(request.getHeader("x-auth-type"));
     }
 
-    public static boolean isAdminAuth(MutableHttpServletRequest request) {
+    public static boolean isAdminAuth(HttpServletRequest request) {
         return X_AUTH_TYPE.Admin.xAuthTypeHeaderValue().equals(request.getHeader("x-auth-type"));
     }
 
@@ -89,19 +89,27 @@ public class WebUtils {
         return request.getParameterMap().containsKey(parameterName);
     }
 
-    public static String getClientIdFromHeader(MutableHttpServletRequest request) {
-        return request.getHeader("x-client-id");
+    public static String getClientIdFromHeader(HttpServletRequest request) {
+        String clientID=request.getHeader("x-client-id");
+        if (clientID==null){
+            clientID=getClientIdFromParameter(request);
+        }
+        return clientID;
     }
 
-    public static String getClientSecretFromHeader(MutableHttpServletRequest request) {
-        return request.getHeader("x-client-secret");
+    public static String getClientSecretFromHeader(HttpServletRequest request) {
+        String clientSecret=request.getHeader("x-client-secret");
+        if (clientSecret==null){
+            clientSecret=getClientSecretFromAttribute(request);
+        }
+        return clientSecret;
     }
 
-    public static String getClientIdFromHeader(ServletRequest request) {
+    public static String getClientIdFromAttribute(ServletRequest request) {
         return (String) request.getAttribute("x-client-id");
     }
 
-    public static String getClientSecretFromHeader(ServletRequest request) {
+    public static String getClientSecretFromAttribute(ServletRequest request) {
         return (String)request.getAttribute("x-client-secret");
     }
 
@@ -113,11 +121,11 @@ public class WebUtils {
         request.putHeader("x-client-secret",clientSecret);
     }
 
-    public static void putClientIdToHeader(ServletRequest request, String clientId) {
+    public static void putClientIdToAttribute(ServletRequest request, String clientId) {
         request.setAttribute("x-client-id",clientId);
     }
 
-    public static void putClientSecretToHeader(ServletRequest request, String clientSecret) {
+    public static void putClientSecretToAttribute(ServletRequest request, String clientSecret) {
         request.setAttribute("x-client-secret",clientSecret);
     }
 
@@ -130,16 +138,16 @@ public class WebUtils {
         }
     }
 
-    public static void putClientIdAndSecretToHeader(ServletRequest wrapperRequest,String clientId, String clientSecret) {
-        if (StringUtils.isEmpty(getClientIdFromHeader(wrapperRequest))){
-            putClientIdToHeader(wrapperRequest,clientId);
+    public static void putClientIdAndSecretToAttribute(ServletRequest request,String clientId, String clientSecret) {
+        if (StringUtils.isEmpty(getClientIdFromAttribute(request))){
+            putClientIdToAttribute(request,clientId);
         }
-        if (StringUtils.isEmpty(getClientSecretFromHeader(wrapperRequest))){
-            putClientSecretToHeader(wrapperRequest,clientSecret);
+        if (StringUtils.isEmpty(getClientSecretFromAttribute(request))){
+            putClientSecretToAttribute(request,clientSecret);
         }
     }
 
-    public static void putClientIdAndSecretToHeaderAsHttpBasic(ServletRequest wrapperRequest,String clientId, String clientSecret) {
+    public static void putClientIdAndSecretToAttributeAsHttpBasic(ServletRequest wrapperRequest,String clientId, String clientSecret) {
         wrapperRequest.setAttribute("username",clientId);
         wrapperRequest.setAttribute("password",clientSecret);
     }

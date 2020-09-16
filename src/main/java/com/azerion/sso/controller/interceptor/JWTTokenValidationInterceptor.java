@@ -2,7 +2,7 @@ package com.azerion.sso.controller.interceptor;
 
 
 import com.azerion.sso.controller.MutableHttpServletRequest;
-import com.azerion.sso.controller.WebUtils;
+import com.azerion.sso.controller.util.WebUtils;
 import com.azerion.sso.exception.InValidJwtTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

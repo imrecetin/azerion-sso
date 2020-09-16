@@ -1,4 +1,4 @@
-package com.azerion.sso.controller;
+package com.azerion.sso.controller.util;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.fasterxml.jackson.core.JsonProcessingException;

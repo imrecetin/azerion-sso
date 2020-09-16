@@ -1,7 +1,6 @@
 package com.azerion.sso.controller.filter;
 
-import com.azerion.sso.controller.MutableHttpServletRequest;
-import com.azerion.sso.controller.WebUtils;
+import com.azerion.sso.controller.util.WebUtils;
 import com.azerion.sso.exception.InValidM2MClientException;
 import com.azerion.sso.exception.InValidXAuthTypeException;
 import org.springframework.util.StringUtils;
@@ -15,25 +14,24 @@ public class M2MCommonHeaderParameterFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request=(HttpServletRequest) servletRequest;
-        MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
-        if (!WebUtils.isM2MAuth(mutableRequest)){
+        if (!WebUtils.isM2MAuth((HttpServletRequest)servletRequest)){
             throw new InValidXAuthTypeException("M2M x-auth-type ile istek oluşturmalısınız");
         }
-        String clientId = WebUtils.getClientIdFromParameter(mutableRequest);
-        String clientSecret = WebUtils.getClientSecretFromParameter(mutableRequest);
-        if (!StringUtils.isEmpty(clientId) && !StringUtils.isEmpty(mutableRequest)){
-            WebUtils.putClientIdAndSecretToHeader(mutableRequest,clientId,clientSecret);
+        String clientId = WebUtils.getClientIdFromParameter(servletRequest);
+        String clientSecret = WebUtils.getClientSecretFromParameter(servletRequest);
+        if (!StringUtils.isEmpty(clientId) && !StringUtils.isEmpty(clientSecret)){
+            WebUtils.putClientIdAndSecretToAttribute(servletRequest,clientId,clientSecret);
         }
-        clientId = WebUtils.getClientIdFromHeader(mutableRequest);
-        clientSecret = WebUtils.getClientSecretFromHeader(mutableRequest);
+        clientId = WebUtils.getClientIdFromHeader((HttpServletRequest)servletRequest);
+        clientSecret = WebUtils.getClientSecretFromHeader((HttpServletRequest)servletRequest);
         final Optional<WebUtils.M2M_CLIENT> m2mClient = WebUtils.M2M_CLIENT.of(clientId);
         if (!m2mClient.isPresent()){
             throw new InValidM2MClientException("M2M için geçersiz clientId : "+clientId);
         }
         if (!StringUtils.isEmpty(clientId) && !StringUtils.isEmpty(clientSecret)){
-            WebUtils.putClientIdAndSecretToHeaderAsHttpBasic(mutableRequest,clientId,clientSecret);
+            WebUtils.putClientIdAndSecretToAttributeAsHttpBasic(servletRequest,clientId,clientSecret);
+            WebUtils.putClientIdAndSecretToAttribute(servletRequest,clientId,clientSecret);
         }
-        filterChain.doFilter(mutableRequest, servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

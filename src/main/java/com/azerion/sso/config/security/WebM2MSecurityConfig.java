@@ -1,5 +1,6 @@
 package com.azerion.sso.config.security;
 
+import com.azerion.sso.config.security.provider.M2MAuthenticationProvider;
 import com.azerion.sso.controller.filter.M2MBasicAuthFilter;
 import com.azerion.sso.controller.filter.M2MCommonHeaderParameterFilter;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,8 @@
 package com.azerion.sso.controller.filter;
 
 import com.azerion.sso.controller.MutableHttpServletRequest;
-import com.azerion.sso.controller.WebUtils;
+import com.azerion.sso.controller.util.WebUtils;
 import com.azerion.sso.exception.InValidXAuthTypeException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +23,7 @@ public class M2MBasicAuthFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws AuthenticationException, IOException, ServletException {
         HttpServletRequest request=(HttpServletRequest)servletRequest;
         MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
-        if (!WebUtils.isM2MAuth(mutableRequest)){
+        if (!WebUtils.isM2MAuth(request)){
             throw new InValidXAuthTypeException("M2M x-auth-type ile istek oluşturmalısınız");
         }
         String clientId = WebUtils.getClientIdFromHeader(mutableRequest);

@@ -1,7 +1,7 @@
 package com.azerion.sso.controller.interceptor;
 
 import com.azerion.sso.controller.MutableHttpServletRequest;
-import com.azerion.sso.controller.WebUtils;
+import com.azerion.sso.controller.util.WebUtils;
 import com.azerion.sso.exception.InValidXAuthTypeException;
 import com.azerion.sso.exception.InValidM2MClientException;
 import org.springframework.stereotype.Component;

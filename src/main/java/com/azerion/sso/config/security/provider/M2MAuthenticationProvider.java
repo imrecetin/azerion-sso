@@ -1,5 +1,6 @@
-package com.azerion.sso.config.security;
+package com.azerion.sso.config.security.provider;
 
+import com.azerion.sso.controller.util.WebUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class M2MAuthenticationProvider implements AuthenticationProvider {
@@ -39,7 +37,7 @@ public class M2MAuthenticationProvider implements AuthenticationProvider {
 
         Collection<GrantedAuthority> grantedAuthorities = authenticatedUser.get().getAuthorities();
         List<GrantedAuthority> extraGrantedAuthorities=new ArrayList<>();
-        if ("client1".equals(name)){
+        if (WebUtils.M2M_CLIENT.clientId1.clientUserName().equals(name)){
             extraGrantedAuthorities.add(new SimpleGrantedAuthority("TODO_DELETE"));
         }
         List<GrantedAuthority> totalGrantedAuthorities=new ArrayList<>(grantedAuthorities);

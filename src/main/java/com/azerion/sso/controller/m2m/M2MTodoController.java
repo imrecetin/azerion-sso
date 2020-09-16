@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/m2m/todo")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Slf4j
 public class M2MTodoController implements TodoController {
 

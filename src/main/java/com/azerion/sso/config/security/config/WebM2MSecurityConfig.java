@@ -1,4 +1,4 @@
-package com.azerion.sso.config.security;
+package com.azerion.sso.config.security.config;
 
 import com.azerion.sso.config.security.provider.M2MAuthenticationProvider;
 import com.azerion.sso.controller.filter.M2MBasicAuthFilter;

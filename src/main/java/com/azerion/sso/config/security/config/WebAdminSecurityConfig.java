@@ -1,4 +1,4 @@
-package com.azerion.sso.config.security;
+package com.azerion.sso.config.security.config;
 
 
 import com.auth0.jwk.JwkProvider;
